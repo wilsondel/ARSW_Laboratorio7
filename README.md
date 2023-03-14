@@ -15,62 +15,14 @@
 * Al seleccionar uno de los planos, se debe mostrar el dibujo del mismo. Por ahora, el dibujo será simplemente una secuencia de segmentos de recta realizada en el mismo orden en el que vengan los puntos.
 
 
-## Ajustes Backend
+**Nota Importante**
 
-1. Trabaje sobre la base del proyecto anterior (en el que se hizo el API REST).
-2. Incluya dentro de las dependencias de Maven los 'webjars' de jQuery y Bootstrap (esto permite tener localmente dichas librerías de JavaScript al momento de construír el proyecto):
+Para el desarrollo del laboratorio, de lo hablado con el profesor, se dividió entre la lógica del fronted y la lógica del backend en repositorios distintos. Para correr el laboratorio, primero se debe clonar el repositorio donde se encuentra la lógica de la API:
+https://github.com/JuanitaOramas/ARSW_laboratorio5 
+El cual se debe poner a correr con mvn compile y luego con mvn spring-boot:run. Y posteriormente clonar el repositorio donde se encuentra la lógica del frontend:
+https://github.com/JuanitaOramas/ARSW_laboratorio6
+Para correrlo se abre el archivo index.html en el navegador.
 
-    ```xml
-    <dependency>
-        <groupId>org.webjars</groupId>
-        <artifactId>webjars-locator</artifactId>
-    </dependency>
-
-    <dependency>
-        <groupId>org.webjars</groupId>
-        <artifactId>bootstrap</artifactId>
-        <version>3.3.7</version>
-    </dependency>
-
-    <dependency>
-        <groupId>org.webjars</groupId>
-        <artifactId>jquery</artifactId>
-        <version>3.1.0</version>
-    </dependency>                
-
-    ```
-
-## Front-End - Vistas
-
-1. Cree el directorio donde residirá la aplicación JavaScript. Como se está usando SpringBoot, la ruta para poner en el mismo contenido estático (páginas Web estáticas, aplicaciones HTML5/JS, etc) es:
-
-    ```
-    src/main/resources/static
-    ```
-
-4. Cree, en el directorio anterior, la página index.html, sólo con lo básico: título, campo para la captura del autor, botón de 'Get blueprints', campo <div> donde se mostrará el nombre del autor seleccionado, [la tabla HTML](https://www.w3schools.com/html/html_tables.asp) donde se mostrará el listado de planos (con sólo los encabezados), y un campo <div> donde se mostrará el total de puntos de los planos del autor. Recuerde asociarle identificadores a dichos componentes para facilitar su búsqueda mediante selectores.
-
-5. En el elemento \<head\> de la página, agregue las referencia a las librerías de jQuery, Bootstrap y a la hoja de estilos de Bootstrap.
-    ```html
-    <head>
-        <title>Blueprints</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <script src="/webjars/jquery/jquery.min.js"></script>
-        <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <link rel="stylesheet"
-          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
-    </head>
-    ```
-
-
-5. Suba la aplicación (mvn spring-boot:run), y rectifique:
-    1. Que la página sea accesible desde:
-    ```
-    http://localhost:8080/index.html
-    ```
-    2. Al abrir la consola de desarrollador del navegador, NO deben aparecer mensajes de error 404 (es decir, que las librerías de JavaScript se cargaron correctamente).
 
 ## Front-End - Lógica
 
@@ -122,5 +74,5 @@
 
 
 
-RESULTADO:
+Resultado:
 ![img.png](img.png)
