@@ -1,5 +1,4 @@
-//
-apimock=(function(){
+var apimock=(function(){
 
 	var mockdata=[];
 
@@ -12,7 +11,7 @@ apimock=(function(){
 	 mockdata["juanitaland"]=[{author:"juanitaland","points":[{"x":100,"y":140},{"x":115,"y":115}],"name":"home"},
      	 {author:"juanitaland","points":[{"x":100,"y":140},{"x":115,"y":115}],"name":"gear2"}];
      mockdata["wilsonland"]=[{author:"wilsonland","points":[{"x":140,"y":140},{"x":115,"y":115}],"name":"home"},
-     	 {author:"wilsonland","points":[{"x":140,"y":140},{"x":115,"y":115}],"name":"gear2"}];
+     	 {author:"wilsonland","points":[{"x":140,"y":140},{"x":115,"y":115}, {"x":130,"y":115}],"name":"gearwilcho"}];
      mockdata["ikyland"]=[{author:"ikyland","points":[{"x":120,"y":120},{"x":120,"y":120}],"name":"ikyhouse"},
      	 {author:"ikyland","points":[{"x":120,"y":120},{"x":120,"y":120}],"name":"gear2"}];
 
@@ -36,8 +35,6 @@ apimock=(function(){
 
 })();
 
-//module.exports = { apimock}
-//export default apimock
 /*
 Example of use:
 var fun=function(list){
