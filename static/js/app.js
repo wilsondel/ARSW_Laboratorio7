@@ -3,6 +3,10 @@ var apimock = apiclient;
 
 app = (function(){
 
+    var myPoints = [];
+    var authorName = "";
+    var blueprintName = "";
+
     function getBlueprintsAuthor() {
         var authorName = $('#name').val();
         if (authorName !== null || authorName !== "" ) {
@@ -46,16 +50,16 @@ app = (function(){
     function getBlueprintsAuthorAndName(data) {
         console.log(data)
         console.log(data.id)
-        var authorName = $('#name').val();
-        var blueprintName = data.id;
+        authorName = $('#name').val();
+        blueprintName = data.id;
         $("#canva-title").text( "Current blueprint: " + blueprintName);
         apimock.getBlueprintsByNameAndAuthor(authorName,blueprintName,myBlueprint);
     }
 
     const myBlueprint = function (data) {
+        myPoints=[];
         // Obtener los puntos del objeto
         const puntos = data.points;
-
 
         const canvas = document.getElementById("myCanvas");
         const ctx = canvas.getContext("2d");
@@ -66,11 +70,14 @@ app = (function(){
 
         // Mover la pluma al primer punto
         ctx.moveTo(puntos[0].x, puntos[0].y);
-
+        let punto =  {x:puntos[0].x,y:puntos[0].y}
+        myPoints.push(punto);
+        console.log("DATOS DEL API: " + puntos[0].x, puntos[0].y)
 
         for (let i = 1; i < puntos.length; i++) {
             const punto = puntos[i];
             ctx.lineTo(punto.x, punto.y);
+            myPoints.push(punto);
         }
 
         // Dibujar una línea de regreso al primer punto para cerrar la forma
@@ -81,9 +88,101 @@ app = (function(){
     }
 
 
+    function init (){
+        positionX = 0;
+        positionY = 0;
+
+        const canvas = document.getElementById("myCanvas");
+                const context = canvas.getContext("2d");
+
+        var rect = canvas.getBoundingClientRect();
+        if(window.PointerEvent) {
+            canvas.addEventListener("pointerdown", function(event){
+//            alert('pointerdown at '+event.pageX+','+event.pageY);
+            positionX = event.clientX - rect.left;
+            positionY = event.clientY - rect.top;
+            savePoints(positionX,positionY);
+
+            });
+        }
+        else {
+            canvas.addEventListener("mousedown", function(event){
+//                    alert('mousedown at '+event.clientX+','+event.clientY);
+            positionX = event.clientX - rect.left;
+            positionY = event.clientY - rect.top;
+            savePoints(positionX,positionY);
+
+
+            });
+        }
+    }
+
+    // add points
+    function savePoints(positionX, positionY) {
+        let punto =  {x:positionX,y:positionY}
+        myPoints.push(punto);
+        console.log("Formato de puntos: " + punto.x)
+        console.log("Formato de puntos: " + punto.y)
+        draw()
+    }
+
+    function draw() {
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.moveTo(myPoints[0].x, myPoints[0].y);
+
+        for (let i = 1; i < myPoints.length; i++) {
+            const punto = myPoints[i];
+            ctx.lineTo(punto.x, punto.y);
+        }
+
+        // Dibujar una línea de regreso al primer punto para cerrar la forma
+        ctx.lineTo(myPoints[0].x, myPoints[0].y);
+
+
+        ctx.stroke();
+    }
+
+    function saveUpdate() {
+        var authorAndName = authorName + "/" + blueprintName;
+        var putPromise = $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:8080/blueprints/' + authorAndName, async: false,
+            data: JSON.stringify(newPoints)
+            });
+
+        var putPromise.then(
+            function () {
+                console.info("OK");
+            },
+            function () {
+                console.info("ERROR");
+            });
+            return putPromise;
+        };
+
+        var usersGet = function () {
+                var promise = $.get("http://localhost:8080/blueprints/");
+                promise.then(
+                        function (data) {
+                            request1Response = data;
+                        },
+                        function () {
+                            alert("$.get failed!");
+                        }
+                );
+
+                return promise;
+            };
+        // Get
+
+
     return {
         getBlueprintsAuthor,
         getBlueprintsAuthorAndName,
+        init
     }
 
 })();
