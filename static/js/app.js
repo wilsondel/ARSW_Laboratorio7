@@ -6,6 +6,7 @@ app = (function(){
     var myPoints = [];
     var authorName = "";
     var blueprintName = "";
+    var newBlueprintName = "";
 
     function getBlueprintsAuthor() {
         var authorName = $('#name').val();
@@ -146,43 +147,42 @@ app = (function(){
     }
 
     function saveUpdate() {
-        var authorAndName = authorName + "/" + blueprintName;
-        var putPromise = $.ajax({
-            type: 'PUT',
-            url: 'http://localhost:8080/blueprints/' + authorAndName, async: false,
-            data: JSON.stringify(newPoints)
-            });
-
-        var putPromise.then(
-            function () {
-                console.info("OK");
-            },
-            function () {
-                console.info("ERROR");
-            });
-            return putPromise;
+        if (newBlueprintName !== "" || newBlueprintName != null ) {
+            var bp = JSON.stringify({author:authorName,name:newBlueprintName,points:myPoints});
+            apimock.createBlueprint(bp,getBlueprintsAuthor)
+            console.log("Esta entrando aqui" + newBlueprintName)
+            newBlueprintName = "";
+        } else {
+            var myData = JSON.stringify({author:authorName,name:blueprintName,points:myPoints});
+            apimock.saveUpdate(authorName, blueprintName, myData, getBlueprintsAuthor)
         };
+    }
 
-        var usersGet = function () {
-                var promise = $.get("http://localhost:8080/blueprints/");
-                promise.then(
-                        function (data) {
-                            request1Response = data;
-                        },
-                        function () {
-                            alert("$.get failed!");
-                        }
-                );
 
-                return promise;
-            };
-        // Get
+    function create() {
+        newBlueprintName = prompt("New Blueprint Name: ");
+    };
+
+
+    function deletee() {
+        const canvas = document.getElementById("myCanvas"),
+        contex = canvas.getContext("2d");
+        contex.clearRect(0, 0, canvas.width, canvas.height);
+        contex.restore();
+        contex.beginPath();
+        apimock.deleteBlueprint(authorName, blueprintName,getBlueprintsAuthor);
+    }
+
+
 
 
     return {
         getBlueprintsAuthor,
         getBlueprintsAuthorAndName,
-        init
+        init,
+        saveUpdate,
+        create,
+        deletee
     }
 
 })();
